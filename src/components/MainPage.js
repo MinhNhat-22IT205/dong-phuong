@@ -1,6 +1,83 @@
-import React from "react";
+import React, { useState } from "react";
+import { db } from "../firebase/config";
+import { ref, push } from "firebase/database";
 
 const MainPage = () => {
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    phone: "",
+    city: "",
+    experience: "",
+  });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(null);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setError(null);
+
+    // Validate form data before submission
+    if (!formData.fullName || !formData.email || !formData.phone) {
+      alert("Please fill in all required fields");
+      return;
+    }
+
+    try {
+      // Add timestamp and status to the form data
+      const submissionData = {
+        ...formData,
+        submittedAt: new Date().toISOString(),
+        status: "pending",
+      };
+
+      // Create reference to the guideApplications node
+      const guideApplicationsRef = ref(db, "guideApplications");
+
+      // Attempt to write data
+      await push(guideApplicationsRef, submissionData);
+
+      // If successful, show success message
+      alert("Application submitted successfully!");
+
+      // Reset form
+      setFormData({
+        fullName: "",
+        email: "",
+        phone: "",
+        city: "",
+        experience: "",
+      });
+    } catch (error) {
+      setError(error);
+      console.error("Error submitting form:", error);
+
+      // Handle specific error types
+      switch (error.code) {
+        case "PERMISSION_DENIED":
+          alert("Access denied. Please try again later.");
+          break;
+        case "NETWORK_ERROR":
+          alert("Network error. Please check your connection.");
+          break;
+        default:
+          alert("An error occurred. Please try again later.");
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <article>
       <section class="hero" id="home">
@@ -539,6 +616,126 @@ const MainPage = () => {
               </figure>
             </li>
           </ul>
+        </div>
+      </section>
+
+      <section className="become-guide" id="become-guide">
+        <div className="container">
+          <p className="section-subtitle">Join Our Team</p>
+
+          <h2 className="h2 section-title">Become a Tour Guide</h2>
+
+          <p className="section-text">
+            Are you passionate about sharing your local knowledge and culture?
+            Join our team of experienced tour guides and help create
+            unforgettable experiences for travelers from around the world.
+          </p>
+
+          <form className="guide-application-form" onSubmit={handleSubmit}>
+            {error && (
+              <div className="alert alert-danger" role="alert">
+                {error.message}
+              </div>
+            )}
+
+            <div className="form-row">
+              <div className="form-group">
+                <label htmlFor="fullName">Full Name</label>
+                <input
+                  type="text"
+                  id="fullName"
+                  name="fullName"
+                  value={formData.fullName}
+                  onChange={handleInputChange}
+                  placeholder="Enter your full name"
+                  required
+                  className="form-control"
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="email">Email Address</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  placeholder="Enter your email"
+                  required
+                  className="form-control"
+                />
+              </div>
+            </div>
+
+            <div className="form-row">
+              <div className="form-group">
+                <label htmlFor="phone">Phone Number</label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  placeholder="Enter your phone number"
+                  required
+                  className="form-control"
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="city">City</label>
+                <select
+                  id="city"
+                  className="form-control"
+                  name="city"
+                  value={formData.city}
+                  onChange={handleInputChange}
+                  required
+                >
+                  <option value="">Select Your City</option>
+                  <option value="hanoi">Hanoi</option>
+                  <option value="ho-chi-minh">Ho Chi Minh City</option>
+                  <option value="da-nang">Da Nang</option>
+                  <option value="hoi-an">Hoi An</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="experience">Experience</label>
+              <textarea
+                id="experience"
+                name="experience"
+                value={formData.experience}
+                onChange={handleInputChange}
+                placeholder="Tell us about your experience and why you'd make a great tour guide"
+                required
+                className="form-control"
+                rows="4"
+              ></textarea>
+            </div>
+
+            <div className="form-group submit-group">
+              <button
+                type="submit"
+                className={`btn btn-primary submit-button ${
+                  isSubmitting ? "submitting" : ""
+                }`}
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <>
+                    <span className="spinner"></span>
+                    Submitting...
+                  </>
+                ) : (
+                  "Submit Application"
+                )}
+              </button>
+            </div>
+          </form>
         </div>
       </section>
 
