@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "es2016",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "jsx": "react-jsx", // Enable JSX support for React 17+
+    "moduleResolution": "node", // Important for resolving Node modules
+    "baseUrl": ".", // Optional, helpful for resolving imports from the root
+    "paths": {
+      "*": ["node_modules/*"] // Ensure TypeScript can locate your node_modules
+    }
+  }
+}
