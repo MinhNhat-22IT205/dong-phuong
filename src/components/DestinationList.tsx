@@ -69,28 +69,30 @@ export default function DestinationList() {
 
   const handleSubmitBooking = (e: React.FormEvent) => {
     e.preventDefault();
-    if (selectedDestination) {
-      const guide = tourGuides.find(
-        (g) => g.id === selectedDestination.guideId
-      );
-      if (guide) {
-        const newBookedTour = {
-          id: Date.now(), // Use a more robust ID generation in production
-          destination: selectedDestination.name,
-          image: selectedDestination.image,
-          startDate: bookingInfo.checkIn,
-          endDate: bookingInfo.checkOut,
-          status: "Upcoming" as const,
-          tourGuide: guide,
-          duration: selectedDestination.duration,
-          price: selectedDestination.price,
-        };
-        addBookedTour(newBookedTour);
-        setShowModal(false);
-        alert("Tour booked successfully!");
-        navigate("/booked-tours"); // Redirect to booked tours page
-      }
-    }
+    window.open("https://m.me/TourMateVn");
+    return;
+    // if (selectedDestination) {
+    //   const guide = tourGuides.find(
+    //     (g) => g.id === selectedDestination.guideId
+    //   );
+    //   if (guide) {
+    //     const newBookedTour = {
+    //       id: Date.now(), // Use a more robust ID generation in production
+    //       destination: selectedDestination.name,
+    //       image: selectedDestination.image,
+    //       startDate: bookingInfo.checkIn,
+    //       endDate: bookingInfo.checkOut,
+    //       status: "Upcoming" as const,
+    //       tourGuide: guide,
+    //       duration: selectedDestination.duration,
+    //       price: selectedDestination.price,
+    //     };
+    //     addBookedTour(newBookedTour);
+    //     setShowModal(false);
+    //     alert("Tour booked successfully!");
+    //     navigate("/booked-tours"); // Redirect to booked tours page
+    //   }
+    // }
   };
 
   const handleViewTourGuide = (destination: Destination) => {
@@ -371,7 +373,7 @@ export default function DestinationList() {
                     </div>
                   </div>
                   <form onSubmit={handleSubmitBooking}>
-                    <div className="mb-4">
+                    {/* <div className="mb-4">
                       <label
                         htmlFor="name"
                         className="block text-sm font-medium text-gray-700 mb-1"
@@ -454,7 +456,7 @@ export default function DestinationList() {
                         </select>
                         <Users className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                       </div>
-                    </div>
+                    </div> */}
                     <button
                       type="submit"
                       className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"

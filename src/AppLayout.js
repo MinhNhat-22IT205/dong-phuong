@@ -68,20 +68,6 @@ const AppLayout = () => {
                     Tour Guides
                   </Link>
                 </li>
-                <li>
-                  <Link
-                    to="/booked-tours"
-                    className="navbar-link"
-                    data-nav-link
-                  >
-                    My Booked Tours
-                  </Link>
-                </li>
-                <li>
-                  <a href="#" className="navbar-link" data-nav-link>
-                    Contact Us
-                  </a>
-                </li>
               </ul>
             </nav>
           </div>

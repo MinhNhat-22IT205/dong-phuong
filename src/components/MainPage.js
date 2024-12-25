@@ -37,7 +37,7 @@ const MainPage = () => {
       // Add timestamp and status to the form data
       const submissionData = {
         ...formData,
-        submittedAt: new Date().toISOString(),
+        submittedAt: new Date().toLocaleString(),
         status: "pending",
       };
 
@@ -694,10 +694,10 @@ const MainPage = () => {
                   required
                 >
                   <option value="">Select Your City</option>
-                  <option value="hanoi">Hanoi</option>
-                  <option value="ho-chi-minh">Ho Chi Minh City</option>
-                  <option value="da-nang">Da Nang</option>
-                  <option value="hoi-an">Hoi An</option>
+                  <option value="Ha Noi">Ha Noi</option>
+                  <option value="Ho Chi Minh">Ho Chi Minh</option>
+                  <option value="Da Nang">Da Nang</option>
+                  <option value="Hoi An">Hoi An</option>
                   <option value="other">Other</option>
                 </select>
               </div>
